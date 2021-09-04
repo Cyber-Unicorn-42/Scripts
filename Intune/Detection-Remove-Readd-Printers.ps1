@@ -19,10 +19,15 @@ $DriverStoreInfName= "*hprub32a_x64.inf"
 Try {
     If (!(Get-WindowsDriver -Online | where {$_.OriginalFileName -like $DriverStoreInfName} -ErrorAction Stop )){
         Write-host "Driver Not Found"
-        exit 0
+        #Exit 0
+    }
+    Else{
+        Write-Host "Driver Found"
+        #Exit 1
     }
 }
 Catch {
-    Write-host "Driver Found"
-    Exit 1
+    $ErrorMsg = $_.Exception.Message
+    Write-host "Error $ErrorMsg"
+    #Exit 1
 }
