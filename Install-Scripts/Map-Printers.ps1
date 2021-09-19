@@ -57,7 +57,7 @@ $RemoveFirst
 $RemoveOnly
 )
 
-# Normalise the Print server FQDN
+# Normalize the Print server FQDN
 If ($PrintServerFQDN -notlike "\\*") {$PrintServerFQDN = "\\" + $PrintServerFQDN}
 
 # Get the non FQDN name of the print server from the FQDN
