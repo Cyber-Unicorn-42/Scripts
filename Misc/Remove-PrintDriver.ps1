@@ -3,7 +3,7 @@
 Remove print driver from a device completly.
 
 .DESCRIPTION
-This script will all network printers, then remove a specific driver, followed by re-adding the printers from a specified print server.
+This script will remove printers with a specific driver, then remove the driver, followed by re-adding the printers.
 
 .NOTES   
 Name: Remove-PrintDriver.ps1
