@@ -22,7 +22,6 @@ $RegKey = "HubMode"
 
 # Check registry key. If it exists trigger remediation.
 Try {
-    Get-ItemProperty $RegKeyPath | Out-File c:\temp\Reg.txt
     If (Get-ItemPropertyValue $RegKeyPath -Name $RegKey -ErrorAction Stop){
         Write-host "$RegKeyPath\$RegKey exists."
         Exit 1
