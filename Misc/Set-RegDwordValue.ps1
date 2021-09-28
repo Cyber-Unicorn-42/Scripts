@@ -16,7 +16,7 @@ https://peterdodemont.com/
 #>
 
 # Set Variables
-$RegKeyFullPath = "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\2"
+$RegKeyPath = "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\2"
 $RegKey = "1A00"
 $RegKeyValue = "0"
 
@@ -38,13 +38,10 @@ Remove-PSDrive HKCU
 New-PSDrive -PSProvider Registry -Name HKCU -Root HKEY_USERS\$CurrentUserSID  > $null
 
 # Check if the registry path exists if not create it
-If (!(Test-Path $RegKeyFullPath)){
-    # Get the last key name from the path so it can be created
-    $RegKeyPathLeaf = Split-Path $RegKeyFullPath -Leaf
-    $RegKeyPath = Split-Path $RegKeyFullPath
+If (!(Test-Path $RegKeyPath)){
     Try {
         # Create the new path
-        New-Item -Path $RegKeyPath -Name $RegKeyPathLeaf -ErrorAction Stop -Force
+        New-Item $RegKeyPath -ErrorAction Stop -Force > $null
         Write-Host "Registry path created successfully"
     }
     Catch {
@@ -58,7 +55,7 @@ If (!(Test-Path $RegKeyFullPath)){
 }
 # Set dword value of registry key.
 Try {
-    Set-ItemProperty -Path $RegKeyFullPath -Name $RegKey -Value $RegKeyValue -Type Dword -ErrorAction Stop -Force
+    Set-ItemProperty -Path $RegKeyPath -Name $RegKey -Value $RegKeyValue -Type Dword -ErrorAction Stop -Force
     Write-Host "Registry value set correctly"
     # Restore original PSDrive
     Remove-PSDrive HKCU
