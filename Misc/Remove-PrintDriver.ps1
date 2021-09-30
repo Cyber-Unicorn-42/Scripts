@@ -91,7 +91,7 @@ If($RegistryPrinters){
     }
 }
 
-# Create a Scheduled Task for printer removal. Then run it and wait till it completes by checking if the last printer to be removed still exists. Finally remove the task
+# Create a Scheduled Task for printer removal. Then run it and wait till it completes. Finally remove the task
 If($RegistryPrinters){
     Try {
         $RemovalTaskAction = New-ScheduledTaskAction -Execute "Powershell.exe" -Argument "-NoLogo -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -Command $RemoveUserPrintersPath"
@@ -166,7 +166,7 @@ If ($DriverStoreDriver) {
     } 
 }
 
-# Create a Scheduled Task for Re-adding the printer. Then run it and wait till it completes by checking if the last printer to be re-add exists. Finally remove the task.
+# Create a Scheduled Task for Re-adding the printer. Then run it and wait till it completes. Finally remove the task.
 If($RegistryPrinters){
     Try {
         $ReAddTaskAction = New-ScheduledTaskAction -Execute "Powershell.exe" -Argument "-NoLogo -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -Command $ReAddUserPrintersPath"
