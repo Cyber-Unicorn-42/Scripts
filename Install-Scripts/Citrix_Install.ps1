@@ -19,7 +19,7 @@ Try {
 Catch {
     $ErrorMsg = $_.Exception.Message
     Write-host "Error getting Citrix store app detials: $ErrorMsg"
-    Exit 1
+    Exit 421
 }
 
 
@@ -32,7 +32,7 @@ If ($CitrixStoreApp) {
     Catch {
         $ErrorMsg = $_.Exception.Message
         Write-host "Error uninstalling: $ErrorMsg"
-        Exit 1
+        Exit 422
     }
 }
 Else {
@@ -55,6 +55,6 @@ Try {
 Catch {
     $ErrorMsg = $_.Exception.Message
     Write-host "Error installing: $ErrorMsg"
-    Exit 1
+    Exit 423
 }
 Write-Host "Citrix Standalone App Installed."
