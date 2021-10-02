@@ -8,8 +8,8 @@ This script will remove the citrix receiver store app and then install the stand
 .NOTES   
 Name: Citrix_Install.ps1
 Created By: Peter Dodemont
-Version: 1
-DateUpdated: 03/09/2021
+Version: 1.1
+DateUpdated: 01/10/2021
 #>
 
 # Get Citrix Store App
@@ -27,6 +27,7 @@ Catch {
 If ($CitrixStoreApp) {
     Try {
         Remove-AppxPackage $CitrixStoreApp -AllUsers
+        Write-host "Citrix Store App Uninstalled."
     }
     Catch {
         $ErrorMsg = $_.Exception.Message
@@ -34,12 +35,21 @@ If ($CitrixStoreApp) {
         Exit 1
     }
 }
+Else {
+    Write-Host "Citrix Store App Not Detected."
+}
 
 # Install standalone app
 Try {
     Start-Process CitrixWorkspaceApp.exe -ArgumentList "/Silent /includeSSON /noreboot"
     # Sleep for 30 seconds at a time until the receiver process has been detected.
-    Do {start-sleep 30}
+    Write-Host "Citrix Standalone App Installation Started."
+    $TimeAsleep = 0
+    Do {
+        Write-Host "Citrx Workspace App Not Detected in $TimeAsleep seconds. Sleeping for 30 seconds."
+        $TimeAsleep += 30
+        start-sleep 30
+    }
     while (get-process -Name CitrixWorkspaceApp -ErrorAction SilentlyContinue)
 }
 Catch {
@@ -47,3 +57,4 @@ Catch {
     Write-host "Error installing: $ErrorMsg"
     Exit 1
 }
+Write-Host "Citrix Standalone App Installed."

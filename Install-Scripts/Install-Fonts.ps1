@@ -47,4 +47,5 @@ Try{
 Catch {
     $ErrorMsg = $_.Exception.Message
     Write-Host "Font installation Error: $ErrorMsg"
+    Exit 1
 }
