@@ -1,6 +1,6 @@
 <#
 .Synopsis
-Script to set the value of a dword registry key for the currently logged in user.
+Script to set the value of a dword registry key for the currently logged in user
 
 .DESCRIPTION
 This script can be used to set the value of a dword registry key for the currently logged in user (including for the currently logged in user when running as system). It will work even when running as another user (e.g. system)
@@ -8,8 +8,8 @@ This script can be used to set the value of a dword registry key for the current
 .NOTES   
 Name: Set-RegDwordValue.ps1
 Created By: Peter Dodemont
-Version: 1
-DateUpdated: 08/09/2021
+Version: 1.1
+DateUpdated: 15/10/2021
 
 .LINK
 https://peterdodemont.com/
@@ -67,7 +67,7 @@ ForEach ($RegKeyFullPath in $RegKeyFullPaths) {
     }
     # Set dword value of registry key.
     Try {
-        Set-ItemProperty -Path $RegKeyPath -Name $RegKey -Value $RegKeyValue -Type Dword -ErrorAction Stop -Force
+        Set-ItemProperty -Path $RegKeyPath -Name $RegKey -Value $RegKeyValue -Type String -ErrorAction Stop -Force
         Write-Host "Registry value set correctly"
         If ($CurrentUserAsSystem -eq $true){
             # Restore original PSDrive
