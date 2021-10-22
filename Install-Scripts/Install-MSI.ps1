@@ -42,6 +42,7 @@ Param
 $TranscriptPath
 ,
 [Parameter(Mandatory=$true)]
+[ValidateScript({If($_ -NotLike "*.msi"){$true}Else{Throw "The MSI filename should not include the extension."}})]
 [String]
 $MSIFilename
 ,
