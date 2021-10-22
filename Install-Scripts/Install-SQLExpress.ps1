@@ -6,6 +6,28 @@ Install SQL Express with default settings
 This script will install SQL Express 2019 with default settings. You will need to download the SQL install file and generate a configuration file to use.
 The script can also remove start menu shortcuts if dsesired. It assumes the configuration file is in the same folder as the exe
 
+.Parameter TranscriptPath
+The path to save the powershell transcript to.
+Usefull for troubleshooting but should be disabled when deploying broadly as it will display all PowerShell input and output in a log file.
+
+.Parameter ConfigFile
+Name of the config file. The config file should be located in the same folder as setup.exe.
+
+.Parameter SQLInstallFilesPath
+Relative path to the location of the setup.exe file if it is in a sub-folder.
+
+.Parameter RemoveShortcuts
+When specified removes shortcuts created in the start menu.
+
+.Example
+.\Install-SQLExpress.ps1 ConfigFile Install.ini -SQLInstallFilesPath SQLExpress -RemoveShortcuts
+This will install SQL Express using the install.ini configuration file located in the SQLExpress subfolder relative to where the PowerShell script is located.
+Finally it will remove the shortcuts created in the start menu.
+
+.\Install-SQLExpress.ps1 ConfigFile Install.ini -TranscriptPath
+This will install SQL Express using the install.ini configuration file located in the same folder where the PowerShell script is run from.
+A transcript of the input and outputs will be added in c:\temp\SQLExpress2019Install.log
+
 .NOTES   
 Name: Install-SQLExpress.ps1
 Created By: Peter Dodemont

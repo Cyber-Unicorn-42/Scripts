@@ -19,6 +19,10 @@ A switch to check if the printers already exist. If they do remove the printers 
 .Parameter RemoveOnly
 When this parameter is provided no installation is performed, only removal.
 
+.Parameter TranscriptPath
+The path to save the powershell transcript to.
+Usefull for troubleshooting but should be disabled when deploying broadly as it will display all PowerShell input and output in a log file.
+
 .Example
 .\Map-Printers.ps1 -PrintServerFQDN prt-01.securitypete.com -PrinterShareNames PRT-SYD-01,PRT-SYD-02 -RemoveFirst
 This will check the local device is any printer with a name of \\prt-01.securitypete.com\PRT-SYD-01, \\prt-01.securitypete.com\PRT-SYD-02, \\prt-01\PRT-SYD-01 or \\prt-01\PRT-SYD-02 exist and then remove them all.
@@ -30,8 +34,8 @@ This will just remove the printer at \\prt-01.securitypete.com\PRT-SYD-01 withou
 .Notes
 Name: Map-Printer.ps1
 Created By: Peter Dodemont
-Version: 1
-DateUpdated: 13/09/2021
+Version: 1.1
+DateUpdated: 14/10/2021
 
 .Link
 https://peterdodemont.com/
@@ -55,7 +59,23 @@ $RemoveFirst
 [Parameter(Mandatory=$False)]
 [switch]
 $RemoveOnly
+,
+[Parameter(Mandatory=$true)]
+[String]
+$TranscriptPath
 )
+
+# Start transcript when Transcript parameter is passed.
+Try {
+    If ($TranscriptPath){
+        Start-Transcript -Path "$TranscriptPath\PrinterInstall.log" -Force
+    }
+}
+Catch {
+    $ErrorMsg = $_.Exception.Message
+    Write-Host "Unable to start transcript: $ErrorMsg"
+    Exit 431
+}
 
 # Normalize the Print server FQDN
 If ($PrintServerFQDN -notlike "\\*") {$PrintServerFQDN = "\\" + $PrintServerFQDN}
@@ -97,4 +117,16 @@ If ($RemoveOnly -eq $false){
         $ErrorMsg = $_.Exception.Message
         Write-Host "Printer add error: $ErrorMsg"
     }
+}
+
+# Stop transcript when Transcript parameter is passed.
+Try {
+    If ($TranscriptPath){
+        Stop-Transcript
+    }
+}
+Catch {
+    $ErrorMsg = $_.Exception.Message
+    Write-Host "Unable to stop transcript: $ErrorMsg"
+    Exit 432
 }

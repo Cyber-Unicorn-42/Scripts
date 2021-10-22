@@ -6,7 +6,7 @@ Script to set the value of a dword registry key for the currently logged in user
 This script can be used to set the value of a dword registry key for the currently logged in user (including for the currently logged in user when running as system). It will work even when running as another user (e.g. system)
 
 .NOTES   
-Name: Set-RegDwordValue.ps1
+Name: Set-RegStringValue.ps1
 Created By: Peter Dodemont
 Version: 1.1
 DateUpdated: 15/10/2021
@@ -16,8 +16,8 @@ https://peterdodemont.com/
 #>
 
 # Set Variables
-$RegKeyFullPaths = @("HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\2\1A00")
-$RegKeyValue = "0"
+$RegKeyFullPaths = @("HKCU:\SOFTWARE\Policies\Microsoft\Edge\Recommended\NewTabPageLocation")
+$RegKeyValue = "https://peterdodemont.com"
 $CurrentUserAsSystem = $false
 
 # Check if you need to check it for the current user as system

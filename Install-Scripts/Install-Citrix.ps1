@@ -5,8 +5,16 @@ Remove Citrix Workspace store app and install standalone app
 .DESCRIPTION
 This script will remove the citrix receiver store app and then install the standalone app.
 
+.Parameter TranscriptPath
+The path to save the powershell transcript to.
+Usefull for troubleshooting but should be disabled when deploying broadly as it will display all PowerShell input and output in a log file.
+
+.Example
+.\Install-Citrix.ps1 -TranscriptPath c:\temp
+This will install the Citrix Receiver, and a transcript off all commands run in PowerShell and their output will be placed in a log file in C:\temp.
+
 .NOTES   
-Name: Citrix_Install.ps1
+Name: Install-Citrix.ps1
 Created By: Peter Dodemont
 Version: 1.3
 Date Updated: 14/10/2021

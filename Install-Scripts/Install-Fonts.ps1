@@ -5,6 +5,14 @@ Script to install fonts
 .DESCRIPTION
 This script will install the fonts specified.
 
+.Parameter TranscriptPath
+The path to save the powershell transcript to.
+Usefull for troubleshooting but should be disabled when deploying broadly as it will display all PowerShell input and output in a log file.
+
+.Example
+.\Install-Fonts.ps1 -TranscriptPath c:\temp
+This will install the supplied fonts, and a transcript off all commands run in PowerShell and their output will be placed in a log file in C:\temp.
+
 .NOTES   
 Name: Install-Fonts.ps1
 Created By: Peter Dodemont
