@@ -24,11 +24,11 @@ The path to save the powershell transcript to.
 Usefull for troubleshooting but should be disabled when deploying broadly as it will display all PowerShell input and output in a log file.
 
 .Example
-.\Map-Printers.ps1 -PrintServerFQDN prt-01.securitypete.com -PrinterShareNames PRT-SYD-01,PRT-SYD-02 -RemoveFirst
+.\Map-Printers.ps1 -PrintServerName prt-01.securitypete.com -PrinterShareNames PRT-SYD-01,PRT-SYD-02 -RemoveFirst
 This will check the local device is any printer with a name of \\prt-01.securitypete.com\PRT-SYD-01, \\prt-01.securitypete.com\PRT-SYD-02, \\prt-01\PRT-SYD-01 or \\prt-01\PRT-SYD-02 exist and then remove them all.
 Next it will re-add 2 printers \\prt-01.securitypete.com\PRT-SYD-01 and \\prt-01.securitypete.com\PRT-SYD-02.
 
-.\Map-Printers.ps1 -PrintServerFQDN prt-01.securitypete.com -PrinterShareNames PRT-SYD-01 -RemoveOnly
+.\Map-Printers.ps1 -PrintServerName prt-01.securitypete.com -PrinterShareNames PRT-SYD-01 -RemoveOnly
 This will just remove the printer at \\prt-01.securitypete.com\PRT-SYD-01 without re-adding after.
 
 .Notes
@@ -79,10 +79,10 @@ Catch {
 
 # Normalize the Print server FQDN and print server name
 If ($PrintServerName -notlike "\\*") {$PrintServerFQDN = "\\" + $PrintServerName} Else { $PrintServerFQDN = $PrintServerName}
-If ($PrintServerName -like "\\*") {$PrintServerName = $PrintServerName -replace {\\},''}
+If ($PrintServerName -like "\\*") {$PrintServer = $PrintServerName -replace {\\},''}
 
 # Get the non FQDN name of the print server from the FQDN
-$PrintServerName = $PrintServerFQDN.Split(".")[0]
+$PrintServer = $PrintServerFQDN.Split(".")[0]
 
 # Remove printers
 If (($RemoveFirst -eq $true) -Or ($RemoveOnly -eq $true)){
