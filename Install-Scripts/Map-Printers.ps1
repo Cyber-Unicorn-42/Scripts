@@ -60,7 +60,7 @@ $RemoveFirst
 [switch]
 $RemoveOnly
 ,
-[Parameter(Mandatory=$true)]
+[Parameter(Mandatory=$false)]
 [String]
 $TranscriptPath
 )
