@@ -16,15 +16,23 @@ https://peterdodemont.com/
 #>
 
 # Set variable with printer names
-$Printers = @("\\prt-01.securitypete.com\PRT-SYD-01")
+$PrinterNames = @("PRT-SYD-01")
+$PrintServer = "prt-01.securitypete.com"
 
 # Check if printers are installed
 Try{
-    Foreach($Printer in $Printers){
-        # Throw error is printer doesn't exist
-        If (!(Get-Printer -Name $Printer -ErrorAction SilentlyContinue)){
-            Write-Host "$Printer not found"
-            Exit 1
+    Foreach($Printer in $PrinterNames){
+        # Generate full printer name
+        $PrinterShareName = "\\$PrintServer\$Printer"
+        # Get the status of the printer on the print server
+        $PrinterServerStatus = (Get-Printer -ComputerName $PrintServer -Name $Printer).PrinterStatus
+        # Only perform check if the printer on the print server is not offline
+        If ($PrinterServerStatus -ne "Offline") {
+            # Throw error is printer doesn't exist
+            If (!(Get-Printer -Name $PrinterShareName -ErrorAction SilentlyContinue)){
+                Write-Host "$PrinterShareName not found"
+                #Exit 1
+            }
         }
     }
     # If no errors exit with success message and exit code

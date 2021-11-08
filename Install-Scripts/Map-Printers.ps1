@@ -46,7 +46,7 @@ Param
 [Parameter(Mandatory=$true)]
 [ValidateScript({If($_ -like "*.*"){$true}Else{Throw "$_ is not an FQDN. Please enter a FQDN."}})]
 [string]
-$PrintServerFQDN
+$PrintServerName
 ,
 [Parameter(Mandatory=$true)]
 [string[]]
@@ -77,8 +77,9 @@ Catch {
     Exit 431
 }
 
-# Normalize the Print server FQDN
-If ($PrintServerFQDN -notlike "\\*") {$PrintServerFQDN = "\\" + $PrintServerFQDN}
+# Normalize the Print server FQDN and print server name
+If ($PrintServerName -notlike "\\*") {$PrintServerFQDN = "\\" + $PrintServerName} Else { $PrintServerFQDN = $PrintServerName}
+If ($PrintServerName -like "\\*") {$PrintServerName = $PrintServerName -replace {\\},''}
 
 # Get the non FQDN name of the print server from the FQDN
 $PrintServerName = $PrintServerFQDN.Split(".")[0]
@@ -109,8 +110,14 @@ If ($RemoveOnly -eq $false){
             # Generate correct printer name for (re)adding
             $PrinterNameFQDN = $PrintServerFQDN + "\" + $Printer
 
-            # (Re)Add printer
-            Add-Printer -ConnectionName $PrinterNameFQDN
+            # Get the status of the printer on the print server
+            $PrinterServerStatus = (Get-Printer -ComputerName $PrintServerName -Name $Printer).PrinterStatus
+
+            # Only try (re)adding printer if the status of the printer is not offline
+            If ($PrinterServerStatus -ne "Offline") {
+                # (Re)Add printer
+                Add-Printer -ConnectionName $PrinterNameFQDN
+            }
         }
     }
     Catch {
