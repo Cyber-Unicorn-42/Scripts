@@ -24,18 +24,18 @@ The path to save the powershell transcript to.
 Usefull for troubleshooting but should be disabled when deploying broadly as it will display all PowerShell input and output in a log file.
 
 .Example
-.\Map-Printers.ps1 -PrintServerName prt-01.securitypete.com -PrinterShareNames PRT-SYD-01,PRT-SYD-02 -RemoveFirst
+.\Map-Printers.ps1 -PrintServerFQDN prt-01.securitypete.com -PrinterShareNames PRT-SYD-01,PRT-SYD-02 -RemoveFirst
 This will check the local device is any printer with a name of \\prt-01.securitypete.com\PRT-SYD-01, \\prt-01.securitypete.com\PRT-SYD-02, \\prt-01\PRT-SYD-01 or \\prt-01\PRT-SYD-02 exist and then remove them all.
 Next it will re-add 2 printers \\prt-01.securitypete.com\PRT-SYD-01 and \\prt-01.securitypete.com\PRT-SYD-02.
 
-.\Map-Printers.ps1 -PrintServerName prt-01.securitypete.com -PrinterShareNames PRT-SYD-01 -RemoveOnly
+.\Map-Printers.ps1 -PrintServerFQDN prt-01.securitypete.com -PrinterShareNames PRT-SYD-01 -RemoveOnly
 This will just remove the printer at \\prt-01.securitypete.com\PRT-SYD-01 without re-adding after.
 
 .Notes
 Name: Map-Printer.ps1
 Created By: Peter Dodemont
-Version: 1.1
-DateUpdated: 14/10/2021
+Version: 1.2
+DateUpdated: 8/11/2021
 
 .Link
 https://peterdodemont.com/
@@ -46,7 +46,7 @@ Param
 [Parameter(Mandatory=$true)]
 [ValidateScript({If($_ -like "*.*"){$true}Else{Throw "$_ is not an FQDN. Please enter a FQDN."}})]
 [string]
-$PrintServerName
+$PrintServerFQDN
 ,
 [Parameter(Mandatory=$true)]
 [string[]]
@@ -77,12 +77,11 @@ Catch {
     Exit 431
 }
 
-# Normalize the Print server FQDN and print server name
-If ($PrintServerName -notlike "\\*") {$PrintServerFQDN = "\\" + $PrintServerName} Else { $PrintServerFQDN = $PrintServerName}
-If ($PrintServerName -like "\\*") {$PrintServer = $PrintServerName -replace {\\},''}
+# Normalize the Print server FQDN
+If ($PrintServerFQDN -notlike "\\*") {$PrintServerFQDN = "\\" + $PrintServerFQDN}
 
 # Get the non FQDN name of the print server from the FQDN
-$PrintServer = $PrintServerFQDN.Split(".")[0]
+$PrintServerName = $PrintServerFQDN.Split(".")[0]
 
 # Remove printers
 If (($RemoveFirst -eq $true) -Or ($RemoveOnly -eq $true)){
@@ -110,14 +109,8 @@ If ($RemoveOnly -eq $false){
             # Generate correct printer name for (re)adding
             $PrinterNameFQDN = $PrintServerFQDN + "\" + $Printer
 
-            # Get the status of the printer on the print server
-            $PrinterServerStatus = (Get-Printer -ComputerName $PrintServerName -Name $Printer).PrinterStatus
-
-            # Only try (re)adding printer if the status of the printer is not offline
-            If ($PrinterServerStatus -ne "Offline") {
-                # (Re)Add printer
-                Add-Printer -ConnectionName $PrinterNameFQDN
-            }
+            # (Re)Add printer
+            Add-Printer -ConnectionName $PrinterNameFQDN
         }
     }
     Catch {
