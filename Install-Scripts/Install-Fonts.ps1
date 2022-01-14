@@ -10,14 +10,14 @@ The path to save the powershell transcript to.
 Usefull for troubleshooting but should be disabled when deploying broadly as it will display all PowerShell input and output in a log file.
 
 .Example
-.\Install-Fonts.ps1 -TranscriptPath c:\temp
+.\Install-Fonts.ps1 -TranscriptPath c:\temp -Fonts "IBMPlexSans-Regular.otf","IBMPlexSerif-Regular.otf"
 This will install the supplied fonts, and a transcript off all commands run in PowerShell and their output will be placed in a log file in C:\temp.
 
 .NOTES   
 Name: Install-Fonts.ps1
 Created By: Peter Dodemont
-Version: 1.1
-DateUpdated: 14/10/2021
+Version: 1.2
+DateUpdated: 15/01/2022
 
 .LINK
 https://peterdodemont.com/
@@ -28,6 +28,10 @@ Param
 [Parameter(Mandatory=$false)]
 [String]
 $TranscriptPath
+,
+[Parameter(Mandatory=$true)]
+[string[]]
+$Fonts=@()
 )
 
 # Start transcript when Transcript parameter is passed.
@@ -41,9 +45,6 @@ Catch {
     Write-Host "Unable to start transcript: $ErrorMsg"
     Exit 431
 }
-
-# Names of fonts to install
-$Fonts = @("IBMPlexSans-Regular.otf","IBMPlexSerif-Regular.otf")
 
 # Install fonts
 Try{
