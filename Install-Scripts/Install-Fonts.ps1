@@ -30,7 +30,7 @@ Param
 $TranscriptPath
 ,
 [Parameter(Mandatory=$true)]
-[string[]]
+[string]
 $Fonts=@()
 )
 
