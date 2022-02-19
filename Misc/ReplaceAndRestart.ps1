@@ -67,7 +67,7 @@ $ServiceName
 # Start transcript when Transcript parameter is passed.
 Try {
     If ($TranscriptPath){
-        Start-Transcript -Path "$TranscriptPath\CitrixInstall.log" -Force
+        Start-Transcript -Path "$TranscriptPath\ReplaceAndRestart.log" -Force
     }
 }
 Catch {
