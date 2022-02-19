@@ -8,8 +8,8 @@ This script can be used to map network drives for a user through PowerShell.
 .NOTES   
 Name: Map-NetworkDrive.ps1
 Created By: Peter Dodemont
-Version: 1
-DateUpdated: 28/09/2021
+Version: 1.1
+DateUpdated: 14/02/2022
 
 .LINK
 https://peterdodemont.com/
@@ -17,9 +17,9 @@ https://peterdodemont.com/
 
 # Set variables for network drive
 $DriveLetter = "y"
-$SMBDriveLetter = $DriveLetter + ":"
 $FileServer = "FILE-01.securitypete.com"
 $ShareName = "Data\Sydney"
+$SMBDriveLetter = $DriveLetter + ":"
 $DriveRoot = "\\" + $FileServer + "\" + $ShareName
 $RegKeyPath = "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MountPoints2\" + $DriveRoot.Replace('\','#')
 $DriveDisplayName = "Sydney Share"
@@ -32,7 +32,7 @@ $CurrentDriveDetails = Get-PSDrive -Name $DriveLetter -ErrorAction SilentlyConti
 
 # Check network connectivity to server
 Try{
-    $NetworkTest = Test-NetConnection -ComputerName $FileServer -ErrorAction Stop
+    $NetworkTest = Test-NetConnection -ComputerName $FileServer -Port 445 -ErrorAction Stop
 }
 Catch {
     $ErrorMsg = $_.Exception.Message
@@ -41,7 +41,7 @@ Catch {
 }
 
 # Map Drive.
-If ($NetworkTest.PingSucceeded -eq $true) {
+If ($NetworkTest.TcpTestSucceeded -eq $true) {
     Try{
         # Check if drive exists but is mapped to different location
         If (($CurrentDriveDetails.Name -eq $DriveLetter) -AND ($CurrentDriveDetails.DisplayRoot -ne $DriveRoot)) {
