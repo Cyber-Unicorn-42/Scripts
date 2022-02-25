@@ -17,9 +17,9 @@ https://peterdodemont.com/
 #>
 
 # Set Variables
-$RegKeyFullPaths = @("HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\2\1A00")
-$RegKeyExpectedValue = "0"
-$CurrentUserAsSystem = $false
+$RegKeyFullPaths = @("HKCU:\SOFTWARE\Policies\Microsoft\Edge\Recommended\NewTabPageLocation")
+$RegKeyExpectedValue = "https://peterdodemont.com"
+$CurrentUserAsSystem = $false # Use either $true or $false
 
 # Check if you need to check it for the current user as system
 If ($CurrentUserAsSystem -eq $true){

@@ -1,24 +1,25 @@
 <#
 .Synopsis
-Script to set the value of a dword registry key for the currently logged in user.
+Script to set the value of a dword registry key for the currently logged in user
 
 .DESCRIPTION
 This script can be used to set the value of a dword registry key for the currently logged in user (including for the currently logged in user when running as system). It will work even when running as another user (e.g. system)
 
 .NOTES   
-Name: Set-RegDwordValue.ps1
+Name: Set-RegValue.ps1
 Created By: Peter Dodemont
-Version: 1
-DateUpdated: 08/09/2021
+Version: 1.2
+DateUpdated: 26/02/2022
 
 .LINK
 https://peterdodemont.com/
 #>
 
 # Set Variables
-$RegKeyFullPaths = @("HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\2\1A00")
-$RegKeyValue = "0"
-$CurrentUserAsSystem = $false
+$RegKeyFullPaths = @("HKCU:\SOFTWARE\Policies\Microsoft\Edge\Recommended\NewTabPageLocation")
+$RegKeyValue = "https://peterdodemont.com"
+$RegType = "String" #See https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/set-itemproperty for support types
+$CurrentUserAsSystem = $false  # Use either $true or $false
 
 # Check if you need to check it for the current user as system
 If ($CurrentUserAsSystem -eq $true){
@@ -65,9 +66,9 @@ ForEach ($RegKeyFullPath in $RegKeyFullPaths) {
             Exit 1
         }
     }
-    # Set dword value of registry key.
+    # Set value of registry key.
     Try {
-        Set-ItemProperty -Path $RegKeyPath -Name $RegKey -Value $RegKeyValue -Type Dword -ErrorAction Stop -Force
+        Set-ItemProperty -Path $RegKeyPath -Name $RegKey -Value $RegKeyValue -Type $RegType -ErrorAction Stop -Force
         Write-Host "Registry value set correctly"
         If ($CurrentUserAsSystem -eq $true){
             # Restore original PSDrive
