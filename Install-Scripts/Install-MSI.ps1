@@ -17,11 +17,11 @@ The name will also get used for the name of the log file created by the Transcri
 Include any additional public properties you would like to include for the installer
 
 .Example
-.\Install-MSI.ps1 -MSIFilename Firefox.msi -MSIProperties "ALLUSERS=1 DESKTOP_SHORTCUT=false"
+.\Install-MSI.ps1 -MSIFilename Firefox -MSIProperties "ALLUSERS=1 DESKTOP_SHORTCUT=false"
 This will install Firefox for all users without creating desktop shortcuts. The properties specified for MSIProperties are unique for each package.
 You will need to look up what they need to be and if they are even required.
 
-.\Install-MSI.ps1 -MSIFilename Firefox.msi -TranscriptPath c:\temp
+.\Install-MSI.ps1 -MSIFilename Firefox -TranscriptPath c:\temp
 This will install Firefox with the default options, and a transcript off all commands run in PowerShell and their output will be placed in a log file in C:\temp.
 The log file will be Firefox.log.
 
