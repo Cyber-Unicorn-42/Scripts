@@ -10,7 +10,7 @@ The path to save the powershell transcript to.
 Usefull for troubleshooting but should be disabled when deploying broadly as it will display all PowerShell input and output in a log file.
 
 .Parameter MSIFilename
-The file name of the MSI with the extension. Intune/MEM automatically adds switches to any command that it detects has a file with the .msi extension.
+The file name of the MSI without the extension. Intune/MEM automatically adds switches to any command that it detects has a file with the .msi extension.
 The name will also get used for the name of the log file created by the TranscriptPath parameter.
 
 .Parameter MSIProperties
