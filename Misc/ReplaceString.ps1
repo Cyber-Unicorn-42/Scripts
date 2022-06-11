@@ -66,7 +66,7 @@ $NewString
 # Start transcript when Transcript parameter is passed.
 Try {
     If ($TranscriptPath){
-        Start-Transcript -Path "$TranscriptPath\ReplaceAndRestart.log" -Force
+        Start-Transcript -Path "$TranscriptPath\ReplaceString.log" -Force
     }
 }
 Catch {
@@ -77,7 +77,12 @@ Catch {
 
 # Get all the files with the specified filenames in the specified location
 Try {
-    $FileLocations = Get-ChildItem -Path $FilePath -Name $FileName -Recurse
+    If ($Recurse -eq $true) {
+        $FileLocations = Get-ChildItem -Path $FilePath -Name $FileName -Recurse
+    }
+    Else {
+        $FileLocations = Get-ChildItem -Path $FilePath -Name $FileName
+    }
 }
 Catch {
     $ErrorMsg = $_.Exception.Message
