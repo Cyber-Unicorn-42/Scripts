@@ -17,7 +17,7 @@ https://peterdodemont.com/
 
 # Set Variables
 # Rule IDs to be used for validation, comma seperated.
-$RuleIDs = @("3cf97403-1b4a-4492-8e70-98436cf78983","4f94c165-626b-4c6b-81c3-72913aacb03","86f235ad-3f7b-4121-bc95-ea8bde3a5db5")
+$RuleIDs = @("3cf97403-1b4a-4492-8e70-98436cf78983","4f94c165-626b-4c6b-81c3-72913aacb03","86f235ad-3f7b-4121-bc95-ea8bde3a5db5","9420c496-046d-45ab-bd0e-455b2649e41e","24e7483c-c382-4fcc-89f9-df72aa6143b3","a8b026cb-dc1a-4f29-879b-6d8823048999")
 # Get the current Applocker policy
 $AppLockerPolicy = Get-AppLockerPolicy -Effective -Xml
 
