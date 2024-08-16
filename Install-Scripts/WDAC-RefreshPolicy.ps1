@@ -1,4 +1,25 @@
-﻿Param
+﻿<#
+.Synopsis
+Load and apply a WDAC policy.
+
+.DESCRIPTION
+This script will load and apply a WDAC policy on a device.
+
+.Parameter TranscriptPath
+The path to save the powershell transcript to.
+Usefull for troubleshooting but should be disabled when deploying broadly as it will display all PowerShell input and output in a log file.
+
+.Example
+.\WDAC-RefreshPolicy.ps1 -TranscriptPath c:\temp
+This will load the WDAC policy files as specified in the variables, and a transcript of all commands run in PowerShell and their output will be placed in a log file in C:\temp.
+
+.NOTES   
+Name: WDAC-RefreshPolicy.ps1
+Created By: Peter Dodemont
+Version: 1.0
+Date Updated: 17/08/2024
+#>
+Param
 (
 [Parameter(Mandatory=$false)]
 [String]
