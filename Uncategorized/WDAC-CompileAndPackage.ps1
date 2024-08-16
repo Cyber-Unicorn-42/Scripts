@@ -6,7 +6,7 @@ param (
     [ValidateSet("AM", "EM")]
     [array] $EnforcementLevels,
     [Parameter(Mandatory=$true,Position=0)]
-    [ValidateSet("1", "3")]
+    [ValidateSet("1","2","3")]
     [array] $CohortIDs
     )
 
@@ -14,13 +14,22 @@ param (
 # Path to intune packaging folder
 [string]$IntunePackagingFolder = "..\Intune_Deploy_Tools\"
 # GUID of the base policy (used in script installing policy on each device). Update with a unique GUID for your deployment
-$PolicyID = "{F5B21260-2D5F-452B-B167-7F25F8AAA846}"
+$PolicyID = "{A754CB49-BA29-433E-8C32-3854DD8590B9}"
 # Name of Intune packaging executable
 $IntunePackagingTool=".\IntuneWinAppUtil.exe"
 # Argument list used by Intune packaging tool
-$ArgumentList = "-c $IntunePackagingFolder -s $IntunePackagingFolder"+"Refresh-WDACPolicy.ps1 -o $IntunePackagingFolder -q"
+$ArgumentList = "-c $IntunePackagingFolder -s $IntunePackagingFolder"+"WDAC-RefreshPolicy.ps1 -o $IntunePackagingFolder -q"
 # Packaged path and filename
-$PackagedPathAndFilename  = $IntunePackagingFolder+"Refresh-WDACPolicy.intunewin"
+$PackagedPathAndFilename  = $IntunePackagingFolder+"WDAC-RefreshPolicy.intunewin"
+# Set the beginning of the path to the folder containing policy XML and Binary files
+$BasePolicyPathStart = "..\Policies_"
+# Set the end of the path to the folder containing policy XML and Binary files
+$BasePolicyXMLPathEnd = "_Cohort"
+$BasePolicyBinaryPathEnd = "_BIN_Cohort"
+# Set the beginning of the path to the folder containing Intune packaged files
+$IntunePackageDestinationFolderStart = "..\Intune_Package_"
+# Set the beginning of the filename for the Intune package file that will be stored in the
+$RenamedPackagedFilenameStart = "DeployWDACPolicyCohort"
 
 # Check if multiple cohorts and a policy version to compile has also been specified. If they are, provide error.
 If ((($CohortIDs.Count) -gt 1)-and ($PolicyVersionToCompile)) {
@@ -33,11 +42,11 @@ If ((($CohortIDs.Count) -gt 1)-and ($PolicyVersionToCompile)) {
 Foreach ($EnforcementLevel in $EnforcementLevels) {
     # Set Variable
     # Base path to policy XML file for each enforcement level
-    [string]$BasePolicyXMLPath = "..\Policies_" + $EnforcementLevel + "_Cohort"
+    [string]$BasePolicyXMLPath = $BasePolicyPathStart + $EnforcementLevel + $BasePolicyXMLPathEnd
     # Base path to policy binary file for each enforcement level
-    [string]$BasePolicyBinaryPath = "..\Policies_" + $EnforcementLevel + "_BIN_Cohort"
+    [string]$BasePolicyBinaryPath = $BasePolicyPathStart + $EnforcementLevel + $BasePolicyBinaryPathEnd
     # Destination folder of the Intune packaged files
-    [string]$IntunePackageDestinationFolder = "..\Intune_Package_" + $EnforcementLevel + "\"
+    [string]$IntunePackageDestinationFolder = $IntunePackageDestinationFolderStart + $EnforcementLevel + "\"
 
     # Run process for each provided cohort
     ForEach ($CohortID in $CohortIDs) {
@@ -72,7 +81,7 @@ Foreach ($EnforcementLevel in $EnforcementLevels) {
         # Path and filename with GUID for Intune package. As per Microsoft documentation: Policy binary files should be named as {GUID}.cip for multiple policy format files (where {GUID} = <PolicyId> from the Policy XML)
         $IntuneBinaryPolicyPathAndFilename  = $IntunePackagingFolder + $PolicyID + ".cip"
         # Path and filename of the renamed Intune package
-        $RenamedPackagedPathAndFilename = $IntunePackageDestinationFolder + "DeployPolicyCohort" + $CohortID + $EnforcementLevel + $NewPolicyVersionToCompile + ".intunewin"
+        $RenamedPackagedPathAndFilename = $IntunePackageDestinationFolder + $RenamedPackagedFilenameStart + $CohortID + $EnforcementLevel + $NewPolicyVersionToCompile + ".intunewin"
 
         # Generate new WDAC Policy binary file for cohort and Enforcement level.
         Try {

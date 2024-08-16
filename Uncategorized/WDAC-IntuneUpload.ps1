@@ -58,7 +58,7 @@ If (-not ((Get-Module IntuneWin32App))) {Import-Module IntuneWin32App -Force}
 $DetectionScriptPathAndFilename = "..\Intune_Deploy_Tools\WDAC-Detection.ps1"
 
 # Authenticate to Intune
-Connect-MSIntuneGraph -TenantID "CyberUnicorm" -ClientID "9123179d-c307-44de-83df-c4381aa1e61e"
+Connect-MSIntuneGraph -TenantID "CyberUnicorn" -ClientID "9123179d-c307-44de-83df-c4381aa1e61e"
 
 # Run commands for each supplied enforcement level
 ForEach ($EnforcementLevel in $EnforcementLevels) {
@@ -115,7 +115,7 @@ ForEach ($EnforcementLevel in $EnforcementLevels) {
         # Check if policy version to upload was provided
         If ($PolicyVersionToUpload) {
             # Base path to Intune package file to upload
-            [String]$BaseUploadIntunePackagePath = $IntunePackagesFolder + "DeployPolicyCohort" + $CohortID + $EnforcementLevel
+            [String]$BaseUploadIntunePackagePath = $IntunePackagesFolder + "DeployWDACPolicyCohort" + $CohortID + $EnforcementLevel
             # Set relative path to Intune package file to upload
             [String]$UploadIntunePackageRelatviePath = $BaseUploadIntunePackagePath + $PolicyVersionToUpload + ".intunewin"
             # Set absolute path to Intune package file to upload
@@ -125,7 +125,7 @@ ForEach ($EnforcementLevel in $EnforcementLevels) {
         } Else {
             # If no policy version to upload was provided, set absolute path to the most recently modified file for this enforcement level and cohort
             # Searchstring used for selecting files
-            [String]$UploadIntunePackageSearch = "DeployPolicyCohort" + $CohortID + $EnforcementLevel
+            [String]$UploadIntunePackageSearch = "DeployWDACPolicyCohort" + $CohortID + $EnforcementLevel
             # Get details of the most recent file version
             $UploadIntunePackageDetails = Get-ChildItem -Path $IntunePackagesFolder -Include $UploadIntunePackageSearch* -File -Recurse -ErrorAction SilentlyContinue | sort -Property LastWriteTime -Descending | Select -First 1
             # If no policy version to upload was provided, set absolute path to the most recently modified file for this enforcement level and cohort

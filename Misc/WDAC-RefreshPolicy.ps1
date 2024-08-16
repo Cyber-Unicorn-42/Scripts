@@ -20,8 +20,8 @@ Catch {
 # Set Variables
 
 # Set name of the policy binary file
-[String]$PolicyBinaryFilename = "{F5B21260-2D5F-452B-B167-7F25F8AAA846}.cip"
-# Set filename of the policy refresh tool. This tool will apply all WDAC policies on a device and is provided by Microsoft
+[String]$PolicyBinaryFilename = "{A754CB49-BA29-433E-8C32-3854DD8590B9}.cip"
+# Set filename of the policy refresh tool. This tool will apply all WDAC policies on a device and is provided by Microsoft at this URL https://www.microsoft.com/en-us/download/details.aspx?id=102925
 [String]$RefreshPolicyTool = "RefreshPolicy.exe"
 # Set destination folder where policy files will be loaded from
 [String]$DestinationFolder = $env:WinDir+"\System32\CodeIntegrity\CIPolicies\Active\"
@@ -48,7 +48,7 @@ Try {
 
 # Regenerate .NET native images for each .NET version so they are marked as allowed to run. This is done using the ngnen utility.
 Try {
-    # Get ngnen utility for installed .NET versions
+    # Get ngen utility for installed .NET versions
     $NetNgenVersions = Get-ChildItem  $env:SystemRoot\Microsoft.NET\Framework ngen.exe -Recurse 
     # Run ngen utility for each version of .NET with the update parameter to regenerate images
     ForEach ($NetNgenVersion in $NetNgenVersions) { 
