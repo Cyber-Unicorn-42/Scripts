@@ -1,4 +1,38 @@
-﻿# Set parameters
+﻿<#
+.Synopsis
+Compile an WDAC XML policy to binary and create package that can be uploaded to Intune.
+
+.DESCRIPTION
+This script will get compile WDAC XML policies into binary format that can be loaded on Windows devices.
+It will then package all the required files usinf the IntunewinAppUtil packaging utility
+
+.Parameter PolicyVersionToCompile
+An optional parameter that let's you specify a specific version to compile and package.
+This can only be used if you specify a single cohort ID.
+If omitted the latest version found will be used.
+
+.Parameter EnforcementLevels
+The enforcement levels you want to compile and package WDAC policies for.
+
+.Parameter CohortIDs
+The ID's of the different groups you want to compile and package WDAC policies for.
+Add, remove or change the accepted values in the paramter set if the ones provided don't suit.
+
+.Example
+.\WDAC-CompileAndPackage.ps1 -EnforcementLevels AM,EM -CohortIDs 1,3
+This will compile and package the latest WDAC policy found for enforced and audit mode. It will do this for cohort 1 and 3.
+
+.\WDAC-CompileAndPackage.ps1 -EnforcementLevels AM -CohortIDs 2 -PolicyVersionToCompile 3.42
+This will compile and package the WDAC audit mode policy version 3.42 for the cohort with ID 2.
+
+.NOTES   
+Name: WDAC-CompileAndPackage.ps1
+Created By: Peter Dodemont
+Version: 1.0
+Date Updated: 17/08/2024
+#>
+
+# Set parameters
 param (
     [Parameter(Mandatory=$false)]
     [string] $PolicyVersionToCompile,
@@ -60,6 +94,7 @@ Foreach ($EnforcementLevel in $EnforcementLevels) {
         if ($PolicyVersionToCompile) {
             # Get specific policy version XML file from folder with XML files
             $PolicyXMLFile  = Get-ChildItem -Path $FullPolicyXMLPath -Include *$PolicyVersionToCompile* -File -Recurse -ErrorAction SilentlyContinue
+            [string]$NewPolicyVersionToCompile = $PolicyVersionToCompile
         } else {
             # Get latest policy XML file from folder with XML files
             $PolicyXMLFile  = Get-ChildItem -Path $FullPolicyXMLPath -File -Recurse -ErrorAction SilentlyContinue | Sort LastWriteTime | select -last 1
