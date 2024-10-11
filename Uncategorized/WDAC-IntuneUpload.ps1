@@ -40,7 +40,7 @@ If (-not ((Get-Module -ListAvailable -Name IntuneWin32App))) {Install-Module Int
 
 # Check if IntuneWin32App is version 1.4.4 or higher, if not upgrade it
 Try { 
-    If (-not ((Get-Module -ListAvailable -Name IntuneWin32App)).Version -ge [System.Version]"1.4.4") {Update-Module IntuneWin32App -Force -Scope CurrentUser}
+    If (-not ((Get-Module -ListAvailable -Name IntuneWin32App)).Version -ge [System.Version]"1.4.4") {Update-Module IntuneWin32App -Force}
 } Catch {
     $ErrorMsg = $_.Exception.Message
     Write-Host "Error updating IntuneWin32App to latest verions, please update it manually and re-run the script" -ForegroundColor Red
