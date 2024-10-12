@@ -18,6 +18,9 @@ Name: WDAC-RefreshPolicy.ps1
 Created By: Peter Dodemont
 Version: 1.0
 Date Updated: 17/08/2024
+
+.Link
+https://cyberunicorn.me/
 #>
 Param
 (

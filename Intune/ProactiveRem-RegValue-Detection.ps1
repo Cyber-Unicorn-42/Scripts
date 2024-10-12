@@ -13,12 +13,12 @@ Version: 1
 DateUpdated: 08/09/2021
 
 .LINK
-https://peterdodemont.com/
+https://cyberunicorn.me/
 #>
 
 # Set Variables
 $RegKeyFullPaths = @("HKCU:\SOFTWARE\Policies\Microsoft\Edge\Recommended\NewTabPageLocation")
-$RegKeyExpectedValue = "https://peterdodemont.com"
+$RegKeyExpectedValue = "https://cyberunicorn.me"
 $CurrentUserAsSystem = $false # Use either $true or $false
 
 # Check if you need to check it for the current user as system

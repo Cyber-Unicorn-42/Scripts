@@ -12,12 +12,12 @@ Version: 1.2
 DateUpdated: 26/02/2022
 
 .LINK
-https://peterdodemont.com/
+https://cyberunicorn.me/
 #>
 
 # Set Variables
 $RegKeyFullPaths = @("HKCU:\SOFTWARE\Policies\Microsoft\Edge\Recommended\NewTabPageLocation")
-$RegKeyValue = "https://peterdodemont.com"
+$RegKeyValue = "https://cyberunicorn.me"
 $RegType = "String" #See https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/set-itemproperty for support types
 $CurrentUserAsSystem = $false  # Use either $true or $false
 

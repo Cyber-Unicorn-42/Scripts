@@ -34,6 +34,9 @@ Name: ReplaceString.ps1
 Created By: Peter Dodemont
 Version: 1
 Date Updated: 16/03/2022
+
+.Link
+https://cyberunicorn.me/
 #>
 
 Param
